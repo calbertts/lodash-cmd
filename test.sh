@@ -102,3 +102,54 @@ _ findIndex \
 _ findIndex \
   "[ { 'user': 'barney', 'active': false }, { 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': true } ]" \
   "'active'"
+
+echo -e "\nfindLastIndex:"
+_ findLastIndex \
+  "[ { 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': false } ]" \
+  "(o) => o.user == 'pebbles'"
+
+_ findLastIndex \
+  "[ { 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': false } ]" \
+  "({ 'user': 'barney', 'active': true })"
+
+_ findLastIndex \
+  "[ { 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': false } ]" \
+  "['active', false]"
+
+_ findLastIndex \
+  "[ { 'user': 'barney', 'active': true }, { 'user': 'fred', 'active': false }, { 'user': 'pebbles', 'active': false } ]" \
+  "'active'"
+
+echo -e "\nflatten:"
+_ flatten "[1, [2, [3, [4]], 5]]"
+
+echo -e "\nflattenDeep:"
+_ flattenDeep "[1, [2, [3, [4]], 5]]"
+
+echo -e "\nflattenDepth:"
+_ flattenDepth "[1, [2, [3, [4]], 5]]" "1"
+_ flattenDepth "[1, [2, [3, [4]], 5]]" "2"
+
+echo -e "\nfromPairs:"
+_ fromPairs "[['a', 1], ['b', 2]]"
+
+echo -e "\nhead:"
+_ head "[1, 2, 3]"
+_ head "[]"
+
+echo -e "\nindexOf:"
+_ indexOf "[1, 2, 1, 2]" "2"
+_ indexOf "[1, 2, 1, 2]" "2" "2"
+
+echo -e "\ninitial:"
+_ initial "[1, 2, 3]"
+
+echo -e "\nintersection:"
+echo "[2.1, 1.2]" | _ intersection "[2, 3]"
+
+echo -e "\nintersectionBy:"
+echo "[2.1, 1.2]" | _ intersectionBy "[2.3, 3.4]" "Math.floor"
+echo "[{ 'x': 1 }]" | _ intersectionBy "[{ 'x': 2 }, { 'x': 1 }]" "'x'"
+
+echo -e "\nintersectionWith:"
+#echo "[2.1, 1.2]" | _ intersectionBy "[2.3, 3.4]" "Math.floor"
