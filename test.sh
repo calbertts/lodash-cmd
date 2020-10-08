@@ -4,6 +4,10 @@ qjsc -o _ index.js
 
 PATH=$PATH:$PWD
 
+echo "From URL:"
+_ get "'dependencies.@babel/code-frame.version'" \
+  --url https://raw.githubusercontent.com/lodash/lodash/master/package-lock.json
+
 echo "Array Methods"
 
 echo -e "\nchunk:"

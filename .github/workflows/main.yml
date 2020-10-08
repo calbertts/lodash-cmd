@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  buildLinux:
+    runs-on: ubuntu-latest      
+
+    steps:
+    - uses: actions/checkout@v2
+   
+    - name: Compile with QuickJS for Ubuntu
+      uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
+      with:
+        mainFile: index
+       
+    - uses: actions/upload-artifact@master
+      with:
+        name: lodash-cmd-ubuntu
+        path: /home/runner/work/example/example/lodash-cmd-ubuntu
+
+    - name: Compile with QuickJS for CentOS
+      uses: quickjs-actions/quickjs-centos/@v0.0.1
+      with:
+        mainFile: index
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: lodash-cmd-centos
+        path: /home/runner/work/example/example/lodash-cmd-centos
+
+    - name: Compile with QuickJS for Alpine
+      uses: quickjs-actions/quickjs-alpine/@v0.0.3
+      with:
+        mainFile: index
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: lodash-cmd-alpine
+        path: /home/runner/work/example/example/lodash-cmd-alpine
+
+    - name: Compile with QuickJS for Fedora
+      uses: quickjs-actions/quickjs-fedora/@v0.0.1
+      with:
+        mainFile: index
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: lodash-cmd-fedora
+        path: /home/runner/work/example/example/lodash-cmd-fedora
+
+  buildMacOS:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+   
+    - name: Download QuickJS source 
+      run: curl https://bellard.org/quickjs/quickjs-2020-07-05.tar.xz --output quickjssrc.tar.xz; ls -la; pwd
+
+    - name: Uncompress QuickJS source
+      run: tar Jxf quickjssrc.tar.xz
+
+    - name: Build and install QuickJS
+      run: ls -la; cd quickjs-2020-07-05; make; make install
+
+    - name: Verify installation
+      run: which qjsc; which qjs
+
+    - name: Compile with QuickJS for MacOS
+      run: qjsc -flto -o lodash-cmd-macos index.js
+       
+    - uses: actions/upload-artifact@master
+      with:
+        name: lodash-cmd-macos
+        path: lodash-cmd-macos
+
+  createRelease:
+    runs-on: ubuntu-latest      
+    needs: [buildLinux, buildMacOS]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: QuickJS Example - Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    #- uses: actions/download-artifact@master
+    #  with:
+    #    name: hello-ubuntu
+    #    path: ./
+
+    #- uses: actions/download-artifact@master
+    #  with:
+    #    name: hello-macos
+    #    path: ./
+    
+    - name: Upload Ubuntu Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: lodash-cmd-ubuntu
+        asset_name: lodash-cmd-ubuntu
+        asset_content_type: application/octet-stream
+
+    - name: Upload MacOS Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: lodash-cmd-macos
+        asset_name: lodash-cmd-macos
+        asset_content_type: application/octet-stream
+    
+    - name: Upload CentOS Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/example/example/lodash-cmd-centos
+        asset_name: lodash-cmd-centos
+        asset_content_type: application/octet-stream
+
+    - name: Upload Alpine Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/example/example/lodash-cmd-alpine
+        asset_name: lodash-cmd-alpine
+        asset_content_type: application/octet-stream
+
+    - name: Upload Fedora Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/example/example/lodash-cmd-fedora
+        asset_name: lodash-cmd-fedora
+        asset_content_type: application/octet-stream

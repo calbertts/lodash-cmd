@@ -55,7 +55,7 @@ function isEmptyFile(file) {
 
 function process(rawJSON) {
   try {
-    const json = std.evalScript(rawJSON)
+    const json = std.evalScript(`(${rawJSON})`)
     const finalArgs = args._.map(arg => std.evalScript(arg, {backtrace_barrier: true}))
 
     print(JSON.stringify(_[method].apply(null, [ json, ...finalArgs ])))
@@ -79,8 +79,9 @@ if (!isEmptyFile(file)) {
   process(rawJSON)
 } else if (jsonFromURL) {
   try {
-    const json = JSON.parse(jsonFromURL)
-    print(JSON.stringify(_[method](json), null, 2))
+    //const json = JSON.parse(jsonFromURL)
+    process(jsonFromURL)
+    //print(JSON.stringify(_[method](json), null, 2))
   } catch(err) {
     print(`\n  Error parsing JSON from URL\n`)
   }
