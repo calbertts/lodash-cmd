@@ -16,6 +16,9 @@ jobs:
       uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
       with:
         mainFile: lodash-cmd
+
+    - name: Verify binary
+      run: ls -la /home/runner/work/example/example/
        
     - uses: actions/upload-artifact@master
       with:
@@ -125,32 +128,32 @@ jobs:
         asset_name: lodash-cmd-macos
         asset_content_type: application/octet-stream
     
-    - name: Upload CentOS Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/lodash-cmd-centos
-        asset_name: lodash-cmd-centos
-        asset_content_type: application/octet-stream
+    #- name: Upload CentOS Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/lodash-cmd-centos
+    #    asset_name: lodash-cmd-centos
+    #    asset_content_type: application/octet-stream
 
-    - name: Upload Alpine Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/lodash-cmd-alpine
-        asset_name: lodash-cmd-alpine
-        asset_content_type: application/octet-stream
+    #- name: Upload Alpine Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/lodash-cmd-alpine
+    #    asset_name: lodash-cmd-alpine
+    #    asset_content_type: application/octet-stream
 
-    - name: Upload Fedora Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/lodash-cmd-fedora
-        asset_name: lodash-cmd-fedora
-        asset_content_type: application/octet-stream
+    #- name: Upload Fedora Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/lodash-cmd-fedora
+    #    asset_name: lodash-cmd-fedora
+    #    asset_content_type: application/octet-stream
