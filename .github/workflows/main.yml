@@ -78,8 +78,8 @@ jobs:
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-Darwin-x86_64
-        path: lodash-cmd-Darwin-x86_64
+        name: lodash-cmd-$(uname -s)-x86_64
+        path: lodash-cmd-$(uname -s)-x86_64
 
   createRelease:
     runs-on: ubuntu-latest      
