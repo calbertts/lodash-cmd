@@ -18,12 +18,12 @@ jobs:
         mainFile: lodash-cmd
 
     - name: Verify binary
-      run: ls -la /home/runner/work/example/example/
+      run: ls -la /home/runner/work/lodash-cmd/lodash-cmd/
        
     - uses: actions/upload-artifact@master
       with:
         name: lodash-cmd-ubuntu
-        path: /home/runner/work/example/example/lodash-cmd-ubuntu
+        path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu
 
     #- name: Compile with QuickJS for CentOS
     #  uses: quickjs-actions/quickjs-centos/@v0.0.1
