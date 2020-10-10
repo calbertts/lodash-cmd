@@ -98,15 +98,15 @@ jobs:
         draft: false
         prerelease: false
 
-    #- uses: actions/download-artifact@master
-    #  with:
-    #    name: hello-ubuntu
-    #    path: ./
+    - uses: actions/download-artifact@master
+      with:
+        name: lodash-cmd-ubuntu
+        path: ./
 
-    #- uses: actions/download-artifact@master
-    #  with:
-    #    name: hello-macos
-    #    path: ./
+    - uses: actions/download-artifact@master
+      with:
+        name: lodash-cmd-macos
+        path: ./
     
     - name: Upload Ubuntu Binary
       uses: actions/upload-release-asset@v1
