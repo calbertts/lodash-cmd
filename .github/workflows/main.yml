@@ -74,12 +74,12 @@ jobs:
       run: which qjsc; which qjs
 
     - name: Compile with QuickJS for MacOS
-      run: qjsc -flto -o lodash-cmd-macos-$(uname -m) index.js
+      run: qjsc -flto -o lodash-cmd-$(uname -s)-$(uname -m) index.js
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-macos-x86_64
-        path: lodash-cmd-macos-x86_64
+        name: lodash-cmd-Darwin-x86_64
+        path: lodash-cmd-Darwin-x86_64
 
   createRelease:
     runs-on: ubuntu-latest      
@@ -105,7 +105,7 @@ jobs:
 
     - uses: actions/download-artifact@master
       with:
-        name: lodash-cmd-macos-x86_64
+        name: lodash-cmd-Darwin-x86_64
         path: ./
     
     - name: Upload Ubuntu Binary
@@ -124,8 +124,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: lodash-cmd-macos-x86_64
-        asset_name: lodash-cmd-macos-x86_64
+        asset_path: lodash-cmd-Darwin-x86_64
+        asset_name: lodash-cmd-Darwin-x86_64
         asset_content_type: application/octet-stream
     
     #- name: Upload CentOS Binary
