@@ -12,21 +12,17 @@ install() {
     mkdir -p ~/.calbertts_tools
     PATH="$PATH:$HOME/.calbertts_tools"
     
-    if grep -q _ ~/.bashrc; then
-      printf "\n  lodash-cmd (_) found in \$PATH\n\n"
-    else
-      curl -sL -o _ github.com/calbertts/lodash-cmd/releases/latest/download/lodash-cmd-$platform$distro-$arch
-      chmod a+x _
-      mv _ ~/.calbertts_tools
-      ln -s ~/.calbertts_tools/_ /usr/local/bin/_ 2>/dev/null
-      export PATH
-      echo "export PATH=\"\$PATH:\$HOME/.calbertts_tools\"" >> ~/.bashrc
+    curl -sL -o _ github.com/calbertts/lodash-cmd/releases/latest/download/lodash-cmd-$platform$distro-$arch
+    chmod a+x _
+    mv _ ~/.calbertts_tools
+    ln -s ~/.calbertts_tools/_ /usr/local/bin/_ 2>/dev/null
+    export PATH
+    echo "export PATH=\"\$PATH:\$HOME/.calbertts_tools\"" >> ~/.bashrc
 
-      if which_lodashcmd="$(command -v _)"; then
-        printf "\n  Great!, now reload your shell with: source ~/.bashrc\n\n  Try with:\n  \e[92m_ get \"'dependencies.@babel/code-frame.version'\" \\ \n    --url https://raw.githubusercontent.com/lodash/lodash/master/package-lock.json\n\n\e[0m"
-      else
-        printf "\n  Turns out there was an error installing lodash-cmd (_), try it again\n"
-      fi
+    if which_lodashcmd="$(command -v _)"; then
+      printf "\n  Great!, now reload your shell with: source ~/.bashrc\n\n  Try with:\n  \e[92m_ get \"'dependencies.@babel/code-frame.version'\" \\ \n    --url https://raw.githubusercontent.com/lodash/lodash/master/package-lock.json\n\n\e[0m"
+    else
+      printf "\n  Turns out there was an error installing lodash-cmd (_), try it again\n"
     fi
   fi
 }
