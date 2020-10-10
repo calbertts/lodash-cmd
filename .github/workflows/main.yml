@@ -17,13 +17,13 @@ jobs:
       with:
         mainFile: lodash-cmd
 
-    - name: Verify binary
-      run: ls -la /home/runner/work/lodash-cmd/lodash-cmd/
+    - name: Assign arch
+      run: mv /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu-$(uname -m); ls -la /home/runner/work/lodash-cmd/lodash-cmd/
        
     - uses: actions/upload-artifact@master
       with:
         name: lodash-cmd-ubuntu
-        path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu
+        path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu-x86_64
 
     #- name: Compile with QuickJS for CentOS
     #  uses: quickjs-actions/quickjs-centos/@v0.0.1
@@ -74,12 +74,12 @@ jobs:
       run: which qjsc; which qjs
 
     - name: Compile with QuickJS for MacOS
-      run: qjsc -flto -o lodash-cmd-macos index.js
+      run: qjsc -flto -o lodash-cmd-macos-$(uname -m) index.js
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-macos
-        path: lodash-cmd-macos
+        name: lodash-cmd-macos-x86_64
+        path: lodash-cmd-macos-x86_64
 
   createRelease:
     runs-on: ubuntu-latest      
@@ -100,12 +100,12 @@ jobs:
 
     - uses: actions/download-artifact@master
       with:
-        name: lodash-cmd-ubuntu
+        name: lodash-cmd-ubuntu-x86_64
         path: ./
 
     - uses: actions/download-artifact@master
       with:
-        name: lodash-cmd-macos
+        name: lodash-cmd-macos-x86_64
         path: ./
     
     - name: Upload Ubuntu Binary
@@ -114,8 +114,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: lodash-cmd-ubuntu
-        asset_name: lodash-cmd-ubuntu
+        asset_path: lodash-cmd-ubuntu-x86_64
+        asset_name: lodash-cmd-ubuntu-x86_64
         asset_content_type: application/octet-stream
 
     - name: Upload MacOS Binary
@@ -124,8 +124,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: lodash-cmd-macos
-        asset_name: lodash-cmd-macos
+        asset_path: lodash-cmd-macos-x86_64
+        asset_name: lodash-cmd-macos-x86_64
         asset_content_type: application/octet-stream
     
     #- name: Upload CentOS Binary
