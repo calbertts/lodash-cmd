@@ -22,7 +22,7 @@ jobs:
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-ubuntu
+        name: lodash-cmd-ubuntu-x86_64
         path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu-x86_64
 
     #- name: Compile with QuickJS for CentOS
