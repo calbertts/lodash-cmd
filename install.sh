@@ -12,6 +12,7 @@ install() {
     mkdir -p ~/.calbertts_tools
     PATH="$PATH:$HOME/.calbertts_tools"
     
+    echo "Source: https://github.com/calbertts/lodash-cmd/releases/latest/download/lodash-cmd-$platform$distro-$arch"
     curl -sL -o _ github.com/calbertts/lodash-cmd/releases/latest/download/lodash-cmd-$platform$distro-$arch
     chmod a+x _
     mv _ ~/.calbertts_tools
