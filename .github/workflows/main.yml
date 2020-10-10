@@ -15,42 +15,42 @@ jobs:
     - name: Compile with QuickJS for Ubuntu
       uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
       with:
-        mainFile: index
+        mainFile: lodash-cmd
        
     - uses: actions/upload-artifact@master
       with:
         name: lodash-cmd-ubuntu
         path: /home/runner/work/example/example/lodash-cmd-ubuntu
 
-    - name: Compile with QuickJS for CentOS
-      uses: quickjs-actions/quickjs-centos/@v0.0.1
-      with:
-        mainFile: index
+    #- name: Compile with QuickJS for CentOS
+    #  uses: quickjs-actions/quickjs-centos/@v0.0.1
+    #  with:
+    #    mainFile: index
 
-    - uses: actions/upload-artifact@master
-      with:
-        name: lodash-cmd-centos
-        path: /home/runner/work/example/example/lodash-cmd-centos
+    #- uses: actions/upload-artifact@master
+    #  with:
+    #    name: lodash-cmd-centos
+    #    path: /home/runner/work/example/example/lodash-cmd-centos
 
-    - name: Compile with QuickJS for Alpine
-      uses: quickjs-actions/quickjs-alpine/@v0.0.3
-      with:
-        mainFile: index
+    #- name: Compile with QuickJS for Alpine
+    #  uses: quickjs-actions/quickjs-alpine/@v0.0.3
+    #  with:
+    #    mainFile: index
 
-    - uses: actions/upload-artifact@master
-      with:
-        name: lodash-cmd-alpine
-        path: /home/runner/work/example/example/lodash-cmd-alpine
+    #- uses: actions/upload-artifact@master
+    #  with:
+    #    name: lodash-cmd-alpine
+    #    path: /home/runner/work/example/example/lodash-cmd-alpine
 
-    - name: Compile with QuickJS for Fedora
-      uses: quickjs-actions/quickjs-fedora/@v0.0.1
-      with:
-        mainFile: index
+    #- name: Compile with QuickJS for Fedora
+    #  uses: quickjs-actions/quickjs-fedora/@v0.0.1
+    #  with:
+    #    mainFile: index
 
-    - uses: actions/upload-artifact@master
-      with:
-        name: lodash-cmd-fedora
-        path: /home/runner/work/example/example/lodash-cmd-fedora
+    #- uses: actions/upload-artifact@master
+    #  with:
+    #    name: lodash-cmd-fedora
+    #    path: /home/runner/work/example/example/lodash-cmd-fedora
 
   buildMacOS:
     runs-on: macos-latest
