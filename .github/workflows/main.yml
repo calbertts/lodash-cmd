@@ -73,13 +73,17 @@ jobs:
     - name: Verify installation
       run: which qjsc; which qjs
 
+    - name: Create variable
+      run: echo "platform=$(uname -s)" >> $GITHUB_ENV
+      run: echo "arch=$(uname -m)" >> $GITHUB_ENV
+
     - name: Compile with QuickJS for MacOS
-      run: qjsc -flto -o lodash-cmd-$(uname -s)-$(uname -m) index.js
-       
+      run: qjsc -flto -o lodash-cmd-${{ env.platform }}-${{ env.arch }} index.js
+
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-$(uname -s)-x86_64
-        path: lodash-cmd-$(uname -s)-x86_64
+        name: lodash-cmd-${{ env.platform }}-${{ env.arch }}
+        path: lodash-cmd-${{ env.platform }}-${{ env.arch }}
 
   createRelease:
     runs-on: ubuntu-latest      
