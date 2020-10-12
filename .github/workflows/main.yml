@@ -17,13 +17,19 @@ jobs:
       with:
         mainFile: lodash-cmd
 
-    - name: Assign arch
-      run: mv /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu-$(uname -m); ls -la /home/runner/work/lodash-cmd/lodash-cmd/
+    - name: Create envs variables
+      run: | 
+        echo "platform=$(uname -s)" >> $GITHUB_ENV
+        echo "arch=$(uname -m)" >> $GITHUB_ENV
+        echo "distro=$(cat /etc/*-release 2>/dev/null | grep ^ID=[A-Za-z]* | sed s/ID=/-/g | sed s/\"//g)" >> $GITHUB_ENV
+
+    - name: Assign platform, distro and arch
+      run: mv /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-${{ env.platform }}${{ env.distro }}-${{ env.arch }}; ls -la /home/runner/work/lodash-cmd/lodash-cmd/
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-ubuntu-x86_64
-        path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-ubuntu-x86_64
+        name: lodash-cmd-${{ env.platform }}${{ env.distro }}-${{ env.arch }}
+        path: /home/runner/work/lodash-cmd/lodash-cmd/lodash-cmd-${{ env.platform }}${{ env.distro }}-${{ env.arch }}
 
     #- name: Compile with QuickJS for CentOS
     #  uses: quickjs-actions/quickjs-centos/@v0.0.1
@@ -73,13 +79,18 @@ jobs:
     - name: Verify installation
       run: which qjsc; which qjs
 
+    - name: Create env variables
+      run: | 
+        echo "platform=$(uname -s)" >> $GITHUB_ENV
+        echo "arch=$(uname -m)" >> $GITHUB_ENV
+
     - name: Compile with QuickJS for MacOS
-      run: qjsc -flto -o lodash-cmd-$(uname -s)-$(uname -m) index.js
-       
+      run: qjsc -flto -o lodash-cmd-${{ env.platform }}-${{ env.arch }} index.js
+
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-$(uname -s)-x86_64
-        path: lodash-cmd-$(uname -s)-x86_64
+        name: lodash-cmd-${{ env.platform }}-${{ env.arch }}
+        path: lodash-cmd-${{ env.platform }}-${{ env.arch }}
 
   createRelease:
     runs-on: ubuntu-latest      
@@ -98,9 +109,15 @@ jobs:
         draft: false
         prerelease: false
 
+    - name: Create envs variables
+      run: | 
+        echo "platform=$(uname -s)" >> $GITHUB_ENV
+        echo "arch=$(uname -m)" >> $GITHUB_ENV
+        echo "distro=$(cat /etc/*-release 2>/dev/null | grep ^ID=[A-Za-z]* | sed s/ID=/-/g | sed s/\"//g)" >> $GITHUB_ENV
+
     - uses: actions/download-artifact@master
       with:
-        name: lodash-cmd-ubuntu-x86_64
+        name: lodash-cmd-Linux-ubuntu-x86_64
         path: ./
 
     - uses: actions/download-artifact@master
@@ -114,8 +131,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: lodash-cmd-ubuntu-x86_64
-        asset_name: lodash-cmd-ubuntu-x86_64
+        asset_path: lodash-cmd-Linux-ubuntu-x86_64
+        asset_name: lodash-cmd-Linux-ubuntu-x86_64
         asset_content_type: application/octet-stream
 
     - name: Upload MacOS Binary
