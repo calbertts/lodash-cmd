@@ -75,11 +75,14 @@ jobs:
 
     - name: Compile with QuickJS for MacOS
       run: qjsc -flto -o lodash-cmd-$(uname -s)-$(uname -m) index.js
+
+    - name: Create variable
+      run: echo "platform=$(uname -s)" >> $GITHUB_ENV
        
     - uses: actions/upload-artifact@master
       with:
-        name: lodash-cmd-$(uname -s)-x86_64
-        path: lodash-cmd-$(uname -s)-x86_64
+        name: lodash-cmd-${{ github.platform }}-x86_64
+        path: lodash-cmd-${{ github.platform }}-x86_64
 
   createRelease:
     runs-on: ubuntu-latest      
